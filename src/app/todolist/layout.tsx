@@ -1,6 +1,13 @@
+"use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function TodolistLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const handleLogout = () => {
+    localStorage.clear();
+    router.push("/");
+  };
   return (
     <div>
       <header className=">flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white text-sm py-4 dark:bg-neutral-800">
@@ -25,9 +32,9 @@ export default function TodolistLayout({ children }: { children: React.ReactNode
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <line x1="3" x2="21" y1="6" y2="6" />
                   <line x1="3" x2="21" y1="12" y2="12" />
@@ -41,9 +48,9 @@ export default function TodolistLayout({ children }: { children: React.ReactNode
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <path d="M18 6 6 18" />
                   <path d="m6 6 12 12" />
@@ -59,14 +66,16 @@ export default function TodolistLayout({ children }: { children: React.ReactNode
               <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500" href="#">
                 Profile
               </a>
-              <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500" href="#">
+              <button className="font-medium text-gray-600 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500" onClick={() => handleLogout()}>
                 Logout
-              </a>
+              </button>
             </div>
           </div>
         </nav>
       </header>
-      <div className="max-w-screen w-full h-min-screen">{children}</div>
+      <div className="max-w-screen w-full h-min-screen">
+        <div className="container px-20">{children}</div>
+      </div>
     </div>
   );
 }

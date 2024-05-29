@@ -1,5 +1,7 @@
 "use client";
 
+"use client"
+
 import Form from "@/component/Form";
 import { useEffect, useState } from "react";
 import axios from "axios";
