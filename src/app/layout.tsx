@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import PrelineScript from "../../app/components/PrelineScript";
-const inter = Inter({ subsets: ["latin"] });
 
+const inter = Inter({ subsets: ["latin"] });
+// import PrelineScript from "./components/PrelineScript";
 export const metadata: Metadata = {
   title: "TODOLIST",
   description: "Todolist Naufhal",
@@ -16,8 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <PrelineScript />
-      <body className={inter.className}>{children}</body>
+      {/* <PrelineScript /> */}
+      <body suppressHydrationWarning={true} className={inter.className}>
+        {children}
+      </body>
     </html>
   );
 }
