@@ -7,6 +7,7 @@ import { FaPlus } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { FaRegTrashAlt, FaCheck } from "react-icons/fa";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 export default function Todolist() {
   const router = useRouter();
@@ -28,7 +29,10 @@ export default function Todolist() {
     };
     return date.toLocaleString("en-US", options);
   };
+  //State For Get Data
   const [data, setData] = useState([]);
+
+  // Get All Todolist
   const getAllTodolist = async () => {
     try {
       const res = await axios.get(`http://localhost:9000/api/todo`, {
@@ -42,10 +46,35 @@ export default function Todolist() {
       console.log(err);
     }
   };
-
+  // For Displaying Data
   useEffect(() => {
     getAllTodolist();
   }, []);
+
+  // Handle Delete
+  const handleDelete = (id: any) => {
+    Swal.fire({
+      title: "Apa kamu yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, Hapus",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await axios.delete(`http://localhost:9000/api/todo/delete/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(res);
+        Swal.fire("Data Deleted Successfully!!", "Your Data has Been Deleted", "success");
+        getAllTodolist();
+      }
+    });
+  };
 
   return (
     <div className="w-full px-6">
@@ -83,7 +112,7 @@ export default function Todolist() {
                             <button className="bg-yellow-400 px-6 py-2 text-white mx-2">
                               <MdEdit />
                             </button>
-                            <button className="bg-red-400 px-6 py-2 text-white mx-2">
+                            <button onClick={() => handleDelete(item.id)} className="bg-red-400 px-6 py-2 text-white mx-2">
                               <FaRegTrashAlt />
                             </button>
                             <button className="bg-green-400 px-6 py-2 text-white mx-2">
