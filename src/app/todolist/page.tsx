@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 // Icon
 import { FaRegTrashAlt, FaCheck, FaSearch } from "react-icons/fa";
+import { IoIosDownload } from "react-icons/io";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
@@ -119,6 +120,36 @@ export default function Todolist() {
     });
   };
 
+  const downloadFile = async (id: any) => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/todo/download/${id}`, {
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      const contentDisposition = response.headers["content-disposition"];
+      let fileName = "download.zip";
+      if (contentDisposition) {
+        const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (fileNameMatch && fileNameMatch.length === 2) {
+          fileName = fileNameMatch[1];
+        }
+      }
+
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading the file", error);
+    }
+  };
   return (
     <div className="w-full px-6">
       <div className="flex justify-between items-center mt-4 mb-6">
@@ -173,6 +204,12 @@ export default function Todolist() {
                             <button onClick={() => setComplete(item.id)} className="bg-green-400 px-6 py-2 text-white mx-2">
                               <FaCheck />
                             </button>
+                            <button onClick={() => downloadFile(item.id)} className="bg-blue-400 px-6 py-2 text-white mx-2">
+                              <IoIosDownload />
+                            </button>
+                            <Link href={`/todolist/${item.id}`} className="bg-orange-500 px-6 py-2 text-white mx-2">
+                              Detail
+                            </Link>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">{item.name}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-sm text-gray-800 dark:text-neutral-200">{item.status}</td>
