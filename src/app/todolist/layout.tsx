@@ -63,9 +63,6 @@ export default function TodolistLayout({ children }: { children: React.ReactNode
               <a className="font-medium text-blue-500" href="#" aria-current="page">
                 Todolist
               </a>
-              <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500" href="#">
-                Profile
-              </a>
               <button className="font-medium text-gray-600 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500" onClick={() => handleLogout()}>
                 Logout
               </button>
